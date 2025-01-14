@@ -1,8 +1,8 @@
-name: Generate Stats Images
+name: Run Cron
 
 on:
   push:
-    branches: [master]
+    branches: [main]
   schedule:
     - cron: "0 8,14,20 * * *"
   workflow_dispatch:
@@ -23,7 +23,7 @@ jobs:
         run: echo $(date +"%Y-%m-%d") > LAST_UPDATE.txt
 
       # Generate all statistics images
-      - name: Generate images
+      - name: Run Cron
         run: |
         env:
           ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
@@ -37,8 +37,7 @@ jobs:
         run: |
           git config --global user.name "Kurt-Leopard/cron_job"
           git config --global user.email "markangeloujamandre@gmail.com"
-          git pull --force
           git add .
           # Force the build to succeed, even if no files were changed
-          git commit -m 'Update generated files' --force || true
-          git push --force
+          git commit -m 'Update generated files' || true
+          git push
